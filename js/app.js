@@ -166,15 +166,18 @@ function createDropDiv(answer) {
     randomizedhrgn = randomizedhrgns[i];
     dropDiv = document.createElement('div');
     dropDiv.randomizedhrgn = randomizedhrgn;
-    dropDiv.setAttribute("ondrop", "dropHandler(event)");
-    dropDiv.setAttribute("ondragover", "dragoverHandler(event)");
-    dropDiv.setAttribute("class", "dropEle");
+    dropDiv.className = "dropEle";
+
     dropDiv.style.border = '3px solid var(--white)';
     dropDiv.style.borderRadius = "8px";
     dropDiv.style.height = '2.3rem';
     dropDiv.style.width = '2.3rem';
     dropDiv.style.textAlign = 'center';
     dropDiv.style.boxSizing = 'border-box';
+
+    dropDiv.addEventListener("drop", dropHandler);
+    dropDiv.addEventListener("dragover", dragoverHandler);
+
     dropEle.appendChild(dropDiv); 
   }
 }
@@ -188,7 +191,7 @@ function createElements(randomizedhrgns, charType) {
     div.randomizedhrgn = randomizedhrgn;
     div.textContent = `${randomizedhrgn}`;
     div.setAttribute("draggable", "true");
-    div.setAttribute("ondragstart", "dragstartHandler(event)");
+    div.addEventListener("dragstart", dragstartHandler);
     div.setAttribute("id", `${randomizedhrgn} + ${[i]}`);
     div.style.border = '3px solid var(--white)';
     div.style.borderRadius = "8px";
@@ -205,16 +208,13 @@ function createElements(randomizedhrgns, charType) {
   }
 }
 
-
 function dragstartHandler(event) {
   event.dataTransfer.setData("text", event.target.id);
 }
 
-
 function dragoverHandler(event) {
   event.preventDefault();
 }
-
 
 function dropHandler(event) {
   event.preventDefault();
@@ -433,4 +433,14 @@ ruleButton.addEventListener("click", openPopup);
 closeButton.addEventListener("click", closePopup);
 winButton.addEventListener("click", switchState);
 backButton.addEventListener("click", switchState);
-langugeToggle.addEventListener("click", changeLanguage)
+langugeToggle.addEventListener("click", changeLanguage);
+
+startButton.addEventListener("click", switchState);
+nextButton.addEventListener("click", generateNext);
+resetButton.addEventListener("click", resetDragDrop);
+hintButton.addEventListener("click", showHint);
+ruleButton.addEventListener("click", openPopup);
+closeButton.addEventListener("click", closePopup);
+winButton.addEventListener("click", switchState);
+backButton.addEventListener("click", switchState);
+langugeToggle.addEventListener("click", changeLanguage);
