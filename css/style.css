@@ -1,0 +1,453 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Gloria+Hallelujah&family=Hachi+Maru+Pop&family=Poiret+One&display=swap');
+
+:root {
+  --green: #028760;
+  --white: #ffffff;
+  --darkgreen: #3B7960;
+  --black: #000000;
+  --gray: #6b7b6e;
+  --lightGreen: #98d98e;
+  --brown: #6d3c32;
+  --purple: #4a488e;
+}
+
+body {
+    font-family: "Hachi Maru Pop", cursive, sans-serif;
+    font-style: normal;
+    font-size: 1.5rem;
+    box-sizing: border-box;
+    color: var(--white);
+    margin: 0;
+    overflow: hidden;
+    height: 100vh; 
+}
+
+#myVideo {
+  position: fixed;
+  margin: 0;
+  border: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh; 
+  z-index: -1;
+  object-fit: cover;
+}
+
+source {
+  margin: 0;
+}
+  
+#board > * {
+  font-size: 1rem;
+}
+
+#board {
+  position: fixed;
+  top: 200px;
+  left: 55%;
+}
+
+#teacherName {
+  color: var(--white);
+  
+  text-decoration-style: wavy;
+}
+
+.switch {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  display: inline-block;
+  margin: 0 5px;
+}
+
+.switch > span {
+  position: absolute;
+  top: 10px;
+  pointer-events: none;
+  font-weight: bold;
+  font-size: 15px;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, .06);
+  width: 50%;
+  text-align: center;
+}
+
+input.check-toggle-round-flat:checked ~ .off {
+  color: var(--brown);
+}
+  
+input.check-toggle-round-flat:checked ~ .on {
+  color: var(--white);
+}
+
+.switch > span.on {
+  left: 0;
+  padding-left: 2px;
+  color: var(--brown);
+}
+
+.switch > span.off {
+  right: 0;
+  padding-right: 4px;
+  color: var(--white);
+}
+
+.check-toggle {
+  position: absolute;
+  margin-left: -9999px;
+  visibility: hidden;
+}
+
+.check-toggle + label {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+}
+
+input.check-toggle-round-flat + label {
+  padding: 2px;
+  width: 97px;
+  height: 35px;
+  background-color: var(--brown);
+  border-radius: 60px;
+}
+
+input.check-toggle-round-flat + label:before, input.check-toggle-round-flat + label:after {
+  display: block;
+  position: absolute;
+  content: "";
+}
+
+input.check-toggle-round-flat + label:before {
+  top: 2px;
+  left: 2px;
+  bottom: 2px;
+  right: 2px;
+  background-color: var(--brown);
+  border-radius: 60px;
+}
+
+input.check-toggle-round-flat + label:after {
+  top: 4px;
+  left: 4px;
+  bottom: 4px;
+  width: 48px;
+  background-color: var(--white);
+  border-radius: 52px;
+  transition: margin 0.2s;
+}
+
+input.check-toggle-round-flat:checked + label:after {
+  margin-left: 44px;
+}
+
+.popup {
+  width: 400px;
+  height: 400px;
+  background-color: var(--white);
+  position: absolute;
+  top: 0%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.1);
+  text-align: center;
+  padding: 0 30px;
+  color: var(--green);
+  overflow: scroll;
+  scrollbar-color: var(--lightGreen);
+  scrollbar-width: thin;
+  border-radius: 15px;
+  visibility: hidden;
+  transition: transform 0.4s, top 0.4s;
+}
+
+.open-popup {
+  visibility: visible;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+#close-button {
+  width: 100%;
+  margin: 20px auto;
+  cursor: pointer;
+}
+
+#initial-state {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+  /* margin-top: 250px; */
+  gap: 70px;
+} 
+
+#game-state {
+  display: none;
+}
+
+.banner {
+  color: var(--purple);
+  background: rgba(255, 255, 255, .5);
+}
+
+#header-numbers {
+  display: flex;
+  flex-direction: column;  
+  justify-content: center;
+  align-items: center;
+}
+
+#header-numbers * {
+  font-style: bold;
+}
+
+.flex-game {
+  display: flex;
+  height: 65vh;
+  width: 90vw;
+  border-radius: 30px;
+  margin: 30px auto;
+  color: var(--white);
+  align-items: center;
+  justify-content: space-around;
+}
+
+.flex-game, .flex-child {
+    border-radius: 30px;
+}
+
+.flex-child {
+  width: 35vw;
+  min-width: 35vw;
+  background-color: var(--green);   
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px
+}
+
+.flex-question {
+  height: 70%; 
+  flex-direction: column;
+  position: relative;
+}
+
+.flex-options {
+  height: 230px; 
+  width: auto;
+  display: flex;
+  flex-direction: column;
+
+}
+
+#picture {
+  height: auto;
+  max-width: 150px;
+  display: flex;
+  border-radius: 5%;
+  border: 5px solid #ddd;
+}
+
+.answer-stemps {
+  height: auto;
+  max-width: 100px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  border-radius: 5%;
+  border: 5px solid #ddd;
+  transform: rotate(20deg);
+}
+
+#welldone-stemp {
+  z-index: 1;
+  display: none;
+}
+
+#notcorrect-stemp {
+  z-index: 0;
+  display: none;
+}
+  
+input{
+    border: 0;
+    outline: 0;
+    background: transparent;
+    border-bottom: 1px solid black;
+    font-family: "Hachi Maru Pop", cursive, sans-serif;
+    color: var(--white);
+    font-size: 1.5rem;
+  }
+
+#random-options {
+    width: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#reset-button {
+  align-items: center;
+  background-color: var(--white);
+  border: 2px solid var(--black);
+  border-radius: 8px;
+  color: var(--white);
+  cursor: pointer;
+  height: 40px;
+  padding: 0 25px;
+  font-family: "Hachi Maru Pop", cursive, sans-serif;
+  cursor: pointer;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+#next-button {
+  background-color: var(--gray);
+}
+
+.button-game, #reset-button {
+  background-color: #028760;
+}
+
+.button-game {
+  align-items: center;
+  background-color: var(--darkgreen);
+  border: 2px solid var(--black);
+  border-radius: 8px;
+  color: var(--white);
+  cursor: pointer;
+  display: flex;
+  font-family: "Hachi Maru Pop", cursive, sans-serif;
+  font-size: 1.5rem;
+  height: 50px;
+  justify-content: center;
+  max-width: 250px;
+  padding: 0 25px;
+  position: relative;
+  text-align: center;
+}
+
+.button-game:after {
+  background-color: var(--black);
+  border-radius: 8px;
+  content: "";
+  display: block;
+  height: 48px;
+  left: 0;
+  width: 100%;
+  position: absolute;
+  top: -2px;
+  transform: translate(8px, 8px);
+  transition: transform .2s ease-out;
+  z-index: -1;
+}
+
+.button-game:hover:after {
+  transform: translate(0, 0);
+}
+
+#win-button {
+  max-width: 500px;
+  display: none;
+}
+
+.flex-buttons {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+
+.red-border {
+  border-color: red;
+}
+
+.red-border {
+  border-color: red;
+}
+
+#flex-drop {
+  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+      
+}
+
+.dropEle {
+  border: 3px solid var(--white);
+  width: 2rem;
+  height: 2rem;
+  border-radius: 8px;
+  background-color: var(--green);
+  text-align: center;
+  align-items: center;
+  align-content: center;
+}
+
+#flex-drop-parent {
+  display: flex;
+  align-items: center; 
+}
+
+#flex-drop-title {
+  display: flex;
+}
+
+#win-state-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+  align-items: center;
+  gap: 20px;
+}
+
+#win-state {
+  display: none;
+}
+
+#get-character {
+  position: relative;
+  top: 0;
+}
+
+#win-message-div, #end-message-div {
+  border-radius: 15px;
+  align-content: center;
+}
+
+#end-img {
+  background-color: rgb(255, 255, 255, 0.8);
+  border-radius: 50%;
+}
+
+@media only screen and (max-width:768px) {
+  .flex-game {
+    flex-direction: column;
+    gap:10px
+  }
+  .flex-child {
+    width: 90vw;
+  }
+  #header-numbers {
+    padding-top: 60px;
+  }
+  .flex-buttons {
+    top: -10px;
+  }
+  #game-state {
+    position: relative;
+    top: -50px;
+  }
+  #end-img {
+    max-width: 100%; 
+    height: auto;
+  }
+}
