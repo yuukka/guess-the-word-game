@@ -113,7 +113,6 @@ input.check-toggle-round-flat + label {
   width: 97px;
   height: 35px;
   background-color: var(--brown);
-
   border-radius: 60px;
 }
 
@@ -131,6 +130,7 @@ input.check-toggle-round-flat + label:before {
   background-color: var(--brown);
   border-radius: 60px;
 }
+
 input.check-toggle-round-flat + label:after {
   top: 4px;
   left: 4px;
@@ -184,9 +184,7 @@ input.check-toggle-round-flat:checked + label:after {
   height: 90vh;
   /* margin-top: 250px; */
   gap: 70px;
-}  
-
-
+} 
 
 #game-state {
   display: none;
@@ -202,8 +200,6 @@ input.check-toggle-round-flat:checked + label:after {
   flex-direction: column;  
   justify-content: center;
   align-items: center;
-
-  /* padding-top: 20px;   */
 }
 
 #header-numbers * {
@@ -286,8 +282,7 @@ input{
     font-family: "Hachi Maru Pop", cursive, sans-serif;
     color: var(--white);
     font-size: 1.5rem;
-    }
-
+  }
 
 #random-options {
     width: 50%;
@@ -295,8 +290,6 @@ input{
     flex-wrap: wrap;
     gap: 10px;
 }
-
-
 
 #reset-button {
   align-items: center;
@@ -314,7 +307,6 @@ input{
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
-
 
 #next-button {
   background-color: var(--gray);
@@ -445,7 +437,7 @@ input{
     width: 90vw;
   }
   #header-numbers {
-    padding-top: 0;
+    padding-top: 60px;
   }
   .flex-buttons {
     top: -10px;
@@ -458,10 +450,4 @@ input{
     max-width: 100%; 
     height: auto;
   }
-}
-
-@media (min-width: 768px) {
-  /* .button-56 {
-    padding: 0 40px;
-  } */
 }
