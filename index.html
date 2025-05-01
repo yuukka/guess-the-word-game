@@ -1,1 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0&icon_names=refresh" />  
+    <script defer type="module"  src="./js/app.js"></script>
+    <!-- <script defer src="./js/data.js"></script> -->
+</head>
+<body>
+    <video autoplay muted loop id="myVideo">
+        <source src="./media/Classroom.mov" >
+    </video>
+    <div id="board">
+        <!-- <div id="teacher">たんにん：<a href="https://www.linkedin.com/in/yuuki-kashihara/" target="_blank" id="teacherName">かしはら　ゆうき</a></div> -->
+        <div id="firstPeriod">＜きょうのじかんわり＞</div>
+        <div id="firstPeriod">１じかんめ：こくご</div>
+        <div id="secondPeriod">２じかんめ：きたく</div>
+    </div>
+    <section id="initial-state">
+        <div class="switch">
+            
+            <input id="language-toggle" class="check-toggle check-toggle-round-flat" type="checkbox">
+            <label for="language-toggle"></label>
+            <span class="on">JP</span>
+            <span class="off">EN</span>
+        </div>
+
+        <button id="start" class="button-game initial-button" data-i18n="start">スタート</button>
+        <button id="rule" class="button-game initial-button" data-i18n="rule">ルール</button>
+        <div class="popup" id="popup">
+            <!-- <span class="material-symbols-outlined">lightbulb</span> -->
+            <p data-i18n="ruleDescription">えをみて、ことばをあてよう！<br>
+                ５もんぜんぶせいかいするとポケモンをゲットできるゾ！おなじたんごを３かいまちがえるとゲームオーバーなので、ヒントボタンをかつようしよう！</p>
+            <button id = "close-button" class="button-game" data-i18n="closeButton">とじる</button>
+        </div>
+    </section>
+    <section id="game-state">
+        <div id="header-numbers" class="banner">
+            <div id="question"><span data-i18n="question">もんだい: </span><span id="question-number"> questionNumber</span> / 5</div>
+            <div id="try"><span data-i18n="try">とらい: </span><span id="try-number"> tryNumber</span> / 3</div>
+        </div>
+        <div id="" class="flex-game game-state">    
+            <div class="flex-question flex-child">
+                <img class="answer-stemps" id="welldone-stemp" src="https://as2.ftcdn.net/v2/jpg/12/90/89/93/1000_F_1290899383_Ftuy9u1U8szM9MLozbVHk2sGfQwV171c.jpg" alt="welldone-stemp"/>
+                <img class="answer-stemps" id="notcorrect-stemp" src="https://as1.ftcdn.net/v2/jpg/01/89/41/70/1000_F_189417024_hRk0BpHOSmHUio0vl2HSeG34xOPQthOQ.jpg" alt="notcorrect-stemp"/>
+                <div><img src="" id="picture"></div>
+                <div id="answer" data-i18n="answer">こたえ：　</div>
+                <div id="flex-drop"></div> 
+            </div>
+            <div class="flex-options flex-child">
+                <div id="random-options"></div>
+                <button id="reset-button" >
+                    <span class="material-symbols-outlined">refresh</span>
+                </button>
+            </div>
+        </div>
+        <div id="" class="flex-buttons game-state">
+            <button id="hint-button" class="button-game" data-i18n="hint">ヒント</button>
+            <!-- <button id="chkanswer-button" type="submit" class="button-game">こたえあわせ</button> -->
+            <button id="win-button" class="button-game" data-i18n="award">ここをクリックしてね！</button>
+            <button id="next-button" class="button-game" data-i18n="next" disabled>つぎへ</button>
+        </div>
+    </section>
+    <section id="win-state">
+        <div id="win-state-content">
+            <div id="get-character">
+                <div id="win-message-div" class="banner">
+                    <span id = "win-character"></span><span data-i18n="winMessage">をゲットしたよ！</span>
+                </div>
+                <div id="end-message-div" class="banner">
+                    <span id="end-message" data-i18n="endMessage">ざんねん！せいかいは：</span><span id = "end-character"></span>
+                </div>
+            </div>
+            <img src="" id="end-img"> 
+            <button id="win-back-button" class="button-game back-button" data-i18n="back">メニューにもどる</button>
+        </div>
+    </section>
+</body>
+</html>
+
 
