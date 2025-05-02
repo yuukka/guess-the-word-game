@@ -5,6 +5,7 @@ This is a simple front-end word guessing game designed primarily for children at
 
 The inspiration behind creating this game came from my desire to help my son — who is primarily educated in English — gain exposure to the Japanese language in an engaging and playful manner.
 
+
 <img src="./media/readme_material/point.png" alt="point" style="vertical-align: middle; width: 15px;"/> [Click Here To Play!]
 
 [Click Here To Play!]: https://yuukka.github.io/guess-the-word-game/
