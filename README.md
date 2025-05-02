@@ -5,29 +5,23 @@ This is a simple front-end word guessing game designed primarily for children at
 
 The inspiration behind creating this game came from my desire to help my son — who is primarily educated in English — gain exposure to the Japanese language in an engaging and playful manner.
 
- [Click Here To Play!]
+<img src="./media/readme_material/point.png" alt="point" style="vertical-align: middle; width: 15px;"/> [Click Here To Play!]
 
-<img src="./media/readme_material/point.png" alt="point" style="vertical-align: middle; width: 15px;"/>[Click Here To Play!]: https://yuukka.github.io/guess-the-word-game/
+[Click Here To Play!]: https://yuukka.github.io/guess-the-word-game/
 
 ## Screenshots
 
 ### Introduction Page
-<video width="800" height="550" controls autoplay loop>
-  <source src="./media/readme_material/intro_page.mov">
-</video>
-
+![intro_page](./media/readme_material/intro_page1.gif)
 
 ### Game Page
-<img src="./media/readme_material/game_page.png" alt="game_page" width="800"/>
-
+![game_page](./media/readme_material/game_page.png)
 
 ### Try-Next-Time Page
-<img src="./media/readme_material/trynexttime_page.png" alt="trynexttime_page" width="800"/>
-
+![trynexttime_page](./media/readme_material/trynexttime_page.png)
 
 ### Win Page
-<img src="./media/readme_material/win_page.png" alt="win_page" width="800"/>
-
+![win_page](./media/readme_material/win_page.png)
 
 ### Mobile View
 <img src="./media/readme_material/intro_mobile_page.png" alt="intro_mobile_page" width="230"/> <img src="./media/readme_material/game_mobile_page.png" alt="game_mobile_page" width="230"/> <img src="./media/readme_material/trynexttime_mobile_page.png" alt="trynexttime_mobile_page" width="230"/> <img src="./media/readme_material/win_mobile_page.png" alt="win_mobile_page" width="230"/>
