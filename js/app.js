@@ -81,7 +81,6 @@ function changeLanguage(lang) {
     lang = 'en';
   } else {
     lang = 'jp';
-    console.log("lan jp");
   }
   document.documentElement.lang = lang; 
   const trans = translations[lang];
@@ -90,6 +89,7 @@ function changeLanguage(lang) {
     element.innerHTML = trans[key];
   });
 }
+
 
 window.onload = () => {
   defaultLanguage = 'en';
@@ -115,7 +115,6 @@ function randomQ() {
     availableQuizzes = quizzes.filter(quiz => !quiz.show);
     // If no quizzes left to show
     if (availableQuizzes.length === 0) {
-          console.log("No new quiz");
     }
 
     randNumber = Math.floor(Math.random() * availableQuizzes.length);
@@ -167,16 +166,14 @@ function createDropDiv(answer) {
     dropDiv = document.createElement('div');
     dropDiv.randomizedhrgn = randomizedhrgn;
     dropDiv.className = "dropEle";
-
     dropDiv.style.border = '3px solid var(--white)';
     dropDiv.style.borderRadius = "8px";
     dropDiv.style.height = '2.3rem';
     dropDiv.style.width = '2.3rem';
     dropDiv.style.textAlign = 'center';
     dropDiv.style.boxSizing = 'border-box';
-
-    dropDiv.addEventListener("drop", dropHandler);
-    dropDiv.addEventListener("dragover", dragoverHandler);
+    dropDiv.addEventListener("drop", dropHandler);           
+    dropDiv.addEventListener("dragover", dragoverHandler);   
 
     dropEle.appendChild(dropDiv); 
   }
@@ -200,21 +197,22 @@ function createElements(randomizedhrgns, charType) {
     div.style.textAlign = 'center';
     div.style.boxSizing = 'border-box';
     hintEle.appendChild(div);
-    console.log("div: "+ div);
-    console.log("hintEle: "+ hintEle);
     if (charType === "Answer") {
       div.setAttribute("class", "correctChoice");
     }
   }
 }
 
+
 function dragstartHandler(event) {
   event.dataTransfer.setData("text", event.target.id);
 }
 
+
 function dragoverHandler(event) {
   event.preventDefault();
 }
+
 
 function dropHandler(event) {
   event.preventDefault();
@@ -230,17 +228,13 @@ function dropHandler(event) {
     draggedText = draggedElement.innerText;
     concatChoices += draggedText;
     validateAnswer(concatChoices);
-    console.log("data: " + data);
-    console.log("draggedElement: " + draggedElement);
-    console.log("draggedText: " + draggedText);
-    console.log("concatChoices: " + concatChoices);
 }
 
 
 function validateAnswer(concatChoices) {
   let correctAnswer = availableQuizzes[randNumber].name;
   if(!concatChoices) {
-        console.log("No value!");   
+        return;
   } else {
       if (questionNumber.innerText === "5" && (concatChoices.length === correctAnswer.length) && (concatChoices === correctAnswer) && notcorrectStemps.style.display !== "inline"){
       result = 1;
@@ -271,7 +265,7 @@ function validateAnswer(concatChoices) {
       nextButton.removeAttribute('disabled');
       nextButton.style.backgroundColor = 'var(--green)';
     } else if (concatChoices.length !== correctAnswer.length) {
-      console.log("not done yet");
+      return;
     } else if (attempt === 2 && (concatChoices.length === correctAnswer.length) && (concatChoices !== correctAnswer) ) {
       attempt += 1;
       result = 2;
@@ -281,7 +275,6 @@ function validateAnswer(concatChoices) {
       notcorrectStemps.style.display = 'inline';
       attempt += 1;
       tryNumber.innerText = Number(tryNumber.innerText) + 1;
-      console.log(attempt);
     }  
   }
 };
@@ -357,7 +350,6 @@ function switchState() {
   if (state === "initial-state" || state === "") {
     initialEle.style.display = "none";
     state = "game-state";
-    console.log("ここ通過")
     init();
     gameEle.style.display = "block";
 
@@ -388,7 +380,6 @@ function switchState() {
 
 function openPopup(){
   popup.classList.add("open-popup");
-  console.log("hello");
 }
 
 
@@ -401,7 +392,6 @@ function showResult() {
   // geterate some pokemon
   if (result === 1) {
     let pickedImage = Math.floor(Math.random() * pokemons.length);
-    console.log(pickedImage);
     endImg.src = `./media/pokemon/${pokemons[pickedImage].imageUrl}`;
     endMessage.style.display = "none";
     if(langugeToggle.checked) {
@@ -434,7 +424,6 @@ closeButton.addEventListener("click", closePopup);
 winButton.addEventListener("click", switchState);
 backButton.addEventListener("click", switchState);
 langugeToggle.addEventListener("click", changeLanguage);
-
 startButton.addEventListener("click", switchState);
 nextButton.addEventListener("click", generateNext);
 resetButton.addEventListener("click", resetDragDrop);
