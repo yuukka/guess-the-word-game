@@ -30,7 +30,8 @@ The inspiration behind creating this game came from my desire to help my son —
 
 
 ### Mobile View
-<img src="./media/readme_material/intro_mobile_page.png" alt="intro_mobile_page" width="230"/><img src="./media/readme_material/game_mobile_page.png" alt="game_mobile_page" width="230"/>
+<img src="./media/readme_material/intro_mobile_page.png" alt="intro_mobile_page" width="230"/>
+<img src="./media/readme_material/game_mobile_page.png" alt="game_mobile_page" width="230"/>
 <img src="./media/readme_material/trynexttime_mobile_page.png" alt="trynexttime_mobile_page" width="230"/>
 <img src="./media/readme_material/win_mobile_page.png" alt="win_mobile_page" width="230"/>
 
