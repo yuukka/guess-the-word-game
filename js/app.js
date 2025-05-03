@@ -128,7 +128,7 @@ function randomQ() {
 
   // Pick random hrgn and assign it to randomChoices variable, which will be used to show available choices to the user later on
   for (let i = 0; i < discrepancy; i++) {
-      randNumberhrgn = Math.floor(Math.random() * 20);
+      randNumberhrgn = Math.floor(Math.random() * hrgn.length);
       randomChoices += hrgn[randNumberhrgn];
       
   } 
