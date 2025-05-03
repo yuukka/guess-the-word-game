@@ -124,7 +124,7 @@ function randomQ() {
     availableQuizzes[randNumber].show = true; 
 
     for (let i = 0; i < discrepancy; i++) {
-        randNumberhrgn = Math.floor(Math.random() * 20);
+        randNumberhrgn = Math.floor(Math.random() * hrgn.length);
         randomChoices += hrgn[randNumberhrgn];
         
     } 
