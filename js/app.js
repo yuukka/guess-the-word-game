@@ -61,6 +61,7 @@ let draggedText = "";
 
 
 // Class
+// To store the quiz after generating new quiz instance, 
 class currentQuiz {
   constructor(name, number, wordCount) {
     this.name = name;
@@ -76,6 +77,7 @@ class currentQuiz {
 
 
 // Functions
+// Switch the language between English and Japanese. If language toggle is checked show the text is English, else show Japanese. 
 function changeLanguage(lang) {
   if (langugeToggle.checked) {
     lang = 'en';
@@ -90,13 +92,13 @@ function changeLanguage(lang) {
   });
 }
 
-
+// Set the default language to be in Japanese when the page load
 window.onload = () => {
   defaultLanguage = 'en';
   changeLanguage(defaultLanguage);
 };
 
-
+// Prepare to generate the quiz and call randomQ function to generate first quiz
 function init() {
   questionNumber.innerText = 1;
   tryNumber.innerText = 1;
@@ -104,62 +106,66 @@ function init() {
   for (let i = 0; i < quizzes.length; i++ ) {
     quizzes[i].show = false;
   }
-      nextButton.style.display = "block";
-      winButton.style.display = "none"
+  nextButton.style.display = "block";
+  winButton.style.display = "none"
   randomQ();
 };
 
-
+// Generate random quiz from a pool of available quizzes 
 function randomQ() {
-    // Filter quizzes that haven't been shown yet
-    availableQuizzes = quizzes.filter(quiz => !quiz.show);
-    // If no quizzes left to show
-    if (availableQuizzes.length === 0) {
+  // Filter quizzes that haven't been shown yet
+  availableQuizzes = quizzes.filter(quiz => !quiz.show);
+  // If no quizzes left to show
+  if (availableQuizzes.length === 0) {
+  }
+  //Assign random integer to randNumber, up to the number of available quizzes
+  randNumber = Math.floor(Math.random() * availableQuizzes.length);
+
+  // Prepare to show the selected quiz to the user
+  pictureEle.src = availableQuizzes[randNumber].photo;
+  discrepancy = 10 - availableQuizzes[randNumber].wordCount; 
+  availableQuizzes[randNumber].show = true; 
+
+  // Pick random hrgn and assign it to randomChoices variable, which will be used to show available choices to the user later on
+  for (let i = 0; i < discrepancy; i++) {
+      randNumberhrgn = Math.floor(Math.random() * 20);
+      randomChoices += hrgn[randNumberhrgn];
+      
+  } 
+
+  // Create elements based on the generated hrgn and raondomize the order by calling randomizeDiv Function
+  answer = availableQuizzes[randNumber].name;
+  createElements(answer, "Answer");
+  createElements(randomChoices, "randomChoices");
+  randomizeDiv() 
+  answer += randomChoices;
+  answer = answer.split("");
+
+  for (let i = answer.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      [answer[i], answer[j]] = [answer[j], answer[i]]; // Swap
     }
+  randomizedhrgns = answer.join("");
 
-    randNumber = Math.floor(Math.random() * availableQuizzes.length);
-
-    pictureEle.src = availableQuizzes[randNumber].photo;
-    discrepancy = 10 - availableQuizzes[randNumber].wordCount; 
-    availableQuizzes[randNumber].show = true; 
-
-    for (let i = 0; i < discrepancy; i++) {
-        randNumberhrgn = Math.floor(Math.random() * 20);
-        randomChoices += hrgn[randNumberhrgn];
-        
-    } 
-
-    answer = availableQuizzes[randNumber].name;
-    createElements(answer, "Answer");
-    createElements(randomChoices, "randomChoices");
-    randomizeDiv() 
-    answer += randomChoices;
-    answer = answer.split("");
-
-    for (let i = answer.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
-        [answer[i], answer[j]] = [answer[j], answer[i]]; // Swap
-      }
-
-    randomizedhrgns = answer.join("");
-    createDropDiv(availableQuizzes[randNumber].name);
-    newQuiz = new currentQuiz(availableQuizzes[randNumber].name, availableQuizzes[randNumber].number, availableQuizzes[randNumber].wordCount);
-    quizArray.push(newQuiz);
+  //Create the dop elements based on the length of the answer, create new instance so that we can track the available quizzes 
+  createDropDiv(availableQuizzes[randNumber].name);
+  newQuiz = new currentQuiz(availableQuizzes[randNumber].name, availableQuizzes[randNumber].number, availableQuizzes[randNumber].wordCount);
+  quizArray.push(newQuiz);
 };
 
-
+// To randomize/shuffle the pool of generated hrgn elements
 function randomizeDiv() {
   const divs = Array.from(hintEle.children);
-  // Shuffle 
+
   for (let i = divs.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [divs[i], divs[j]] = [divs[j], divs[i]];
   }
-  // Re-append the shuffled divs
+  // Re-append the randomized divs
   divs.forEach(div => hintEle.appendChild(div));
 }
 
-
+// Create the Dop div under the img, this is where the user drop the answers
 function createDropDiv(answer) {
   for (let i = 0; i < answer.length; i++) {
     randomizedhrgn = randomizedhrgns[i];
@@ -179,7 +185,7 @@ function createDropDiv(answer) {
   }
 }
 
-
+// Create elements per hrgn.
 function createElements(randomizedhrgns, charType) {
 
   for (let i = 0; i < randomizedhrgns.length; i++) {
@@ -197,40 +203,44 @@ function createElements(randomizedhrgns, charType) {
     div.style.textAlign = 'center';
     div.style.boxSizing = 'border-box';
     hintEle.appendChild(div);
+    // assign class of correctChoice to later use to highlight the hrgn when the user clikc on 'hint' button
     if (charType === "Answer") {
       div.setAttribute("class", "correctChoice");
     }
   }
 }
 
-
+// When an element/hrgn starts being dragged, store the ID of that element in the dataTransfer object
 function dragstartHandler(event) {
   event.dataTransfer.setData("text", event.target.id);
 }
 
-
+// Needed this function to be able to drop the element/hrgn
 function dragoverHandler(event) {
   event.preventDefault();
 }
 
-
+// Run this function when the dragged hrgn is over a droppable element
 function dropHandler(event) {
   event.preventDefault();
+  // Because the droppable element is not dropEle but child of the dropEle. Somehow needed this
   const dropTarget = event.target.closest(".dropEle");
-  // Not a valid drop zone
+  // Escape if it is not a valid drop zone
   if (!dropTarget) return; 
-  // Prevent drop if already occupied
+  // Prevent dropping if already occupied
   if (dropTarget.children.length > 0) return;
-    const data = event.dataTransfer.getData("text");
-    event.target.appendChild(document.getElementById(data));
-    event.target.style.border = "none";
-    draggedElement = document.getElementById(data);
-    draggedText = draggedElement.innerText;
-    concatChoices += draggedText;
-    validateAnswer(concatChoices);
+
+  //Get the hrgn text from dataTransfer object, as in the dragged element and validate the Answer
+  const data = event.dataTransfer.getData("text");
+  event.target.appendChild(document.getElementById(data));
+  event.target.style.border = "none";
+  draggedElement = document.getElementById(data);
+  draggedText = draggedElement.innerText;
+  concatChoices += draggedText;
+  validateAnswer(concatChoices);
 }
 
-
+// Validate the answer choices and set show the corresponding stamp, allow the user to move to the next page.
 function validateAnswer(concatChoices) {
   let correctAnswer = availableQuizzes[randNumber].name;
   if(!concatChoices) {
@@ -279,15 +289,15 @@ function validateAnswer(concatChoices) {
   }
 };
 
-
+//Loop through the parent element of the dropped element (.dropEle) and remove all elements
 function resetChoices() {
-  let parentElement = document.getElementById('flex-drop'); // Replace 'parentElement' with the actual ID
+  let parentElement = document.getElementById('flex-drop'); 
   while (parentElement.firstChild) {
     parentElement.removeChild(parentElement.firstChild);
   }
 }
 
-
+// Generate next questions when user click next button
 function generateNext() {
   resetChoices();
   reset();
@@ -296,7 +306,7 @@ function generateNext() {
   questionNumber.innerText = Number(questionNumber.innerText) + 1;
 }
 
-
+// reset all variables, attributes, styles etc.
 function reset(){
   discrepancy = 0;
   randNumber = "";
@@ -318,16 +328,16 @@ function reset(){
 
 
 function resetDragDrop() {
-  // Move all children from dropEle back to hintEle
+  // Loop through dropped element's parent (dropTargets) and move all dropped hrgn back to the pool of hrgn where it was origially
   const dropTargets = dropEle.querySelectorAll('.dropEle');
   dropTargets.forEach(drop => {
     if (drop.firstChild) {
-      hintEle.appendChild(drop.firstChild); // Move draggable back
+      hintEle.appendChild(drop.firstChild); 
     }
     // Reset the border for the drop target
     drop.style.border = '3px solid var(--white)';
   });
-  // Clear answer so player can try again
+  // Clear answer so user can try again
   concatChoices = "";
   draggedElement = "";
   draggedText = "";
@@ -335,7 +345,7 @@ function resetDragDrop() {
   notcorrectStemps.style.display = 'none';
 }
 
-
+// Show hint. 'correctChoice' class was assigned to the correct hrgn in createElements function
 function showHint() {
   const divs = Array.from(hintEle.children);
   for (let i = 0; i <= divs.length - 1; i++) {
@@ -345,7 +355,7 @@ function showHint() {
   }
 }
 
-
+// Switch page 
 function switchState() {
   if (state === "initial-state" || state === "") {
     initialEle.style.display = "none";
@@ -378,21 +388,23 @@ function switchState() {
 }
 
 
+// To show the Rule of the game
 function openPopup(){
   popup.classList.add("open-popup");
 }
 
 
+// To close the Rule popup
 function closePopup(){
   popup.classList.remove("open-popup");
 }
 
-
+// Show the result page with randomly picked pokemon if the user got all question correct, if not show 'try next time' page if the user got single quiz three times wrong consecutively
 function showResult() {
   // geterate some pokemon
   if (result === 1) {
     let pickedImage = Math.floor(Math.random() * pokemons.length);
-    endImg.src = `./media/pokemon/${pokemons[pickedImage].imageUrl}`;
+    endImg.src = `./media/Pokemon/${pokemons[pickedImage].imageUrl}`;
     endMessage.style.display = "none";
     if(langugeToggle.checked) {
       winCharacter.innerText = `${pokemons[pickedImage].englishName}`;
@@ -408,22 +420,7 @@ function showResult() {
   winEle.style.display = "block";
 }
 
-
-function pickImage() {
-  Math.floor(Math.random() *  imageFiles.length);
-}
-
-
 // Event Listeners
-startButton.addEventListener("click", switchState);
-nextButton.addEventListener("click", generateNext);
-resetButton.addEventListener("click", resetDragDrop);
-hintButton.addEventListener("click", showHint);
-ruleButton.addEventListener("click", openPopup);
-closeButton.addEventListener("click", closePopup);
-winButton.addEventListener("click", switchState);
-backButton.addEventListener("click", switchState);
-langugeToggle.addEventListener("click", changeLanguage);
 startButton.addEventListener("click", switchState);
 nextButton.addEventListener("click", generateNext);
 resetButton.addEventListener("click", resetDragDrop);
