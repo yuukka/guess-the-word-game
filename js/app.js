@@ -392,7 +392,7 @@ function showResult() {
   // geterate some pokemon
   if (result === 1) {
     let pickedImage = Math.floor(Math.random() * pokemons.length);
-    endImg.src = `./media/pokemon/${pokemons[pickedImage].imageUrl}`;
+    endImg.src = `./media/Pokemon/${pokemons[pickedImage].imageUrl}`;
     endMessage.style.display = "none";
     if(langugeToggle.checked) {
       winCharacter.innerText = `${pokemons[pickedImage].englishName}`;
