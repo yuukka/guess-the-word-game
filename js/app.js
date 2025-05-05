@@ -1,5 +1,5 @@
 import { quizzes, hrgn, states, translations, pokemons} from './data.js';
-
+ 
 // Variables
 let initialEle = document.getElementById("initial-state");
 let gameEle = document.getElementById("game-state");
@@ -113,8 +113,16 @@ function init() {
 
 // Generate random quiz from a pool of available quizzes 
 function randomQ() {
+  //Escape, do not geenrate Q if user is still on initial page
+  if (state === "initial-state") {
+    for (let i = 0; i < quizzes.length; i++) {
+     return;
+    } 
+  }
+
   // Filter quizzes that haven't been shown yet
   availableQuizzes = quizzes.filter(quiz => !quiz.show);
+  
   // If no quizzes left to show
   if (availableQuizzes.length === 0) {
   }
@@ -125,7 +133,7 @@ function randomQ() {
   pictureEle.src = availableQuizzes[randNumber].photo;
   discrepancy = 10 - availableQuizzes[randNumber].wordCount; 
   availableQuizzes[randNumber].show = true; 
-
+  
   // Pick random hrgn and assign it to randomChoices variable, which will be used to show available choices to the user later on
   for (let i = 0; i < discrepancy; i++) {
       randNumberhrgn = Math.floor(Math.random() * hrgn.length);
@@ -220,6 +228,7 @@ function dragoverHandler(event) {
   event.preventDefault();
 }
 
+
 // Run this function when the dragged hrgn is over a droppable element
 function dropHandler(event) {
   event.preventDefault();
@@ -230,19 +239,55 @@ function dropHandler(event) {
   // Prevent dropping if already occupied
   if (dropTarget.children.length > 0) return;
 
+
+
   //Get the hrgn text from dataTransfer object, as in the dragged element and validate the Answer
   const data = event.dataTransfer.getData("text");
   event.target.appendChild(document.getElementById(data));
+  dropTarget.setAttribute("draggable", "true");
+  dropTarget.classList.add("dropped");
   event.target.style.border = "none";
   draggedElement = document.getElementById(data);
   draggedText = draggedElement.innerText;
   concatChoices += draggedText;
-  validateAnswer(concatChoices);
+
+  const dropElements = dropEle.querySelectorAll(".dropEle");
+  dropElements.forEach(dropElement => {
+    const hasNoChildren = dropElement.children.length === 0;
+    const hasDroppedClass = dropElement.classList.contains("dropped");
+    const hasNoColorClass = dropElement.classList.contains("color");
+    const borderNone = dropElement.style.border === "none";
+    // if (hasNoChildren && hasDroppedClass && !hasNoColorClass && borderNone) {
+      if (hasNoChildren && hasDroppedClass && borderNone) {
+        dropElement.style.border = "3px solid var(--white)";
+        // dropElement.classList.add("color");
+      } else {
+       return;
+      }
+  });
+
+
+
+  // validateAnswer(concatChoices);
+  validateAnswer();
 }
 
 // Validate the answer choices and set show the corresponding stamp, allow the user to move to the next page.
-function validateAnswer(concatChoices) {
+// function validateAnswer(concatChoices) {
+function validateAnswer() {
   let correctAnswer = availableQuizzes[randNumber].name;
+  
+  let concatChoices = "";
+  const dropElements = dropEle.querySelectorAll(".dropEle");
+  
+  dropElements.forEach(dropElement => {
+    const hasDroppedClass = dropElement.classList.contains("dropped");
+    const hasChildren = dropElement.children.length === 1;
+    if (hasDroppedClass && hasChildren) {
+      concatChoices += dropElement.firstChild.innerText;
+    }
+  })
+
   if(!concatChoices) {
         return;
   } else {
@@ -299,6 +344,7 @@ function resetChoices() {
 
 // Generate next questions when user click next button
 function generateNext() {
+
   resetChoices();
   reset();
   randomQ();
@@ -368,7 +414,6 @@ function switchState() {
     gameEle.style.display = "none";
     state = "win-state";
     showResult();
-
   } else if (state === "game-state" && result === 2) {
     state = "end-state";
     initialEle.style.display = "none";
@@ -381,9 +426,6 @@ function switchState() {
     winEle.style.display = "none";
     quizArray.forEach(quiz => quiz.resetCurrentQuiz());
     generateNext();
-    for (let i = 0; i < quizzes.length; i++) {
-      quizzes[i].show = false;
-    }
   }
 }
 
