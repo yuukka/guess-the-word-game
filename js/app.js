@@ -204,10 +204,10 @@ function createElements(randomizedhrgns, charType) {
     div = document.createElement('div');
     div.randomizedhrgn = randomizedhrgn;
     div.textContent = `${randomizedhrgn}`;
-    // div.addEventListener("dragstart", dragstartHandler);
-    // div.addEventListener("touchstart", handleTouchStart, { passive: false });
-    // div.addEventListener("touchmove", handleTouchMove, { passive: false });
-    // div.addEventListener("touchend", handleTouchEnd, { passive: false });
+    div.addEventListener("dragstart", dragstartHandler);
+    div.addEventListener("touchstart", handleTouchStart, { passive: false });
+    div.addEventListener("touchmove", handleTouchMove, { passive: false });
+    div.addEventListener("touchend", handleTouchEnd, { passive: false });
     div.setAttribute("draggable", "true");
     div.setAttribute("id", `${randomizedhrgn} + ${[i]}`);
     div.style.border = '3px solid var(--white)';
