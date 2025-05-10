@@ -290,7 +290,7 @@ function handleTouchEnd(event) {
   }
 
   touchDragEl = null;
-  console.log("Hello");
+  
   validateAnswer();
 }
 
@@ -368,10 +368,9 @@ function validateAnswer() {
   dropElements.forEach(dropElement => {
     const hasDroppedClass = dropElement.classList.contains("dropped");
     const hasChildren = dropElement.children.length === 1;
-    // if (hasDroppedClass && hasChildren) {
       if (hasDroppedClass && hasChildren) {
-      concatChoices += dropElement.firstElementChild.innerText;
-    }
+      concatChoices += dropElement.firstElementChild.innerText;      
+  }
   })
   //debugstart
 console.log("concatChoices: "+ concatChoices)
@@ -466,8 +465,13 @@ function resetDragDrop() {
   // Loop through dropped element's parent (dropTargets) and move all dropped hrgn back to the pool of hrgn where it was origially
   const dropTargets = dropEle.querySelectorAll('.dropEle');
   dropTargets.forEach(drop => {
-    if (drop.firstChild) {
-      hintEle.appendChild(drop.firstChild); 
+    if (drop.firstElementChild) {
+
+      console.log(drop.firstElementChild)
+      // drop.firstElementChild.removeAttribute("pointer-events");
+      drop.firstElementChild.style.pointerEvents = '';
+      console.log(drop.firstElementChild)    
+      hintEle.appendChild(drop.firstElementChild); 
     }
     // Reset the border for the drop target
     drop.style.border = '3px solid var(--white)';
@@ -478,6 +482,8 @@ function resetDragDrop() {
   draggedText = "";
   welldoneStemps.style.display = 'none';
   notcorrectStemps.style.display = 'none';
+  // drop.firstElementChild.removeAttribute("pointer-events");
+
 }
 
 // Show hint. 'correctChoice' class was assigned to the correct hrgn in createElements function
