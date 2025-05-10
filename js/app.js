@@ -62,10 +62,6 @@ let touchDragEl = null;
 let offsetX = 0;
 let offsetY = 0;
 let isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-let touchDragEl = null;
-let offsetX = 0;
-let offsetY = 0;
-let isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
 // Class
 // To store the quiz after generating new quiz instance, 
@@ -233,13 +229,6 @@ function createElements(randomizedhrgns, charType) {
     } else {
       div.addEventListener("dragstart", dragstartHandler);
     }
-    if (isTouchDevice) {
-      div.addEventListener("touchstart", handleTouchStart, { passive: false });
-      div.addEventListener("touchmove", handleTouchMove, { passive: false });
-      div.addEventListener("touchend", handleTouchEnd, { passive: false });
-    } else {
-      div.addEventListener("dragstart", dragstartHandler);
-    }
     // assign class of correctChoice to later use to highlight the hrgn when the user clikc on 'hint' button
     if (charType === "Answer") {
       div.setAttribute("class", "correctChoice");
@@ -287,6 +276,7 @@ function handleTouchEnd(event) {
     dropTarget.style.border = "none";
     draggedText = touchDragEl.innerText;
     concatChoices += draggedText;
+    dropTarget.classList.add("dropped");
     validateAnswer(concatChoices);
     touchDragEl.style.position = '';
   } else {
@@ -367,17 +357,19 @@ function validateAnswer() {
   const dropElements = dropEle.querySelectorAll(".dropEle");
   //debugstart
   // console.log("innerText: dropElement.firstChild.innerText",dropElements.firstChild.innerText)
-  console.log("Number of dropElements:", dropElements.length);
-dropElements.forEach(dropElement => {
-  console.log("dropElement classList:", dropElement.classList);
-  console.log("dropElement children:", dropElement.children.length);
-  // console.log("dropElement firstchild:", dropElement.firstChild.innerText);
-});
+  // console.log("Number of dropElements:", dropElements.length);
+// dropElements.forEach(dropElement => {
+//   console.log("dropElement classList:", dropElement.classList);
+//   console.log("dropElement children:", dropElement.firstElementChild);
+//   console.log("dropElement children text:", dropElement.firstElementChild.innerText);
+//   // console.log("dropElement firstchild:", dropElement.firstChild.innerText);
+// });
 //debugend
   dropElements.forEach(dropElement => {
     const hasDroppedClass = dropElement.classList.contains("dropped");
     const hasChildren = dropElement.children.length === 1;
-    if (hasDroppedClass && hasChildren) {
+    // if (hasDroppedClass && hasChildren) {
+      if (hasDroppedClass && hasChildren) {
       concatChoices += dropElement.firstElementChild.innerText;
     }
   })
