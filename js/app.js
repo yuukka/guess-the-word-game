@@ -189,8 +189,7 @@ function createDropDiv(answer) {
     dropDiv.style.width = '2.3rem';
     dropDiv.style.textAlign = 'center';
     dropDiv.style.boxSizing = 'border-box';
-    dropDiv.addEventListener("drop", dropHandler);          
-    dropDiv.addEventListener("drop", dropHandler);          
+    dropDiv.addEventListener("drop", dropHandler);                   
     dropDiv.addEventListener("dragover", dragoverHandler);   
 
     dropEle.appendChild(dropDiv); 
@@ -206,10 +205,6 @@ function createElements(randomizedhrgns, charType) {
     div.randomizedhrgn = randomizedhrgn;
     div.textContent = `${randomizedhrgn}`;
     div.addEventListener("dragstart", dragstartHandler);
-    div.addEventListener("touchstart", handleTouchStart, { passive: false });
-    div.addEventListener("touchmove", handleTouchMove, { passive: false });
-    div.addEventListener("touchend", handleTouchEnd, { passive: false });
-    div.setAttribute("draggable", "true");
     div.addEventListener("touchstart", handleTouchStart, { passive: false });
     div.addEventListener("touchmove", handleTouchMove, { passive: false });
     div.addEventListener("touchend", handleTouchEnd, { passive: false });
@@ -316,7 +311,6 @@ function dropHandler(event) {
   if (dropTarget.children.length > 0) return;
 
 
-
   //Get the hrgn text from dataTransfer object, as in the dragged element and validate the Answer
   const data = event.dataTransfer.getData("text");
   event.target.appendChild(document.getElementById(data));
@@ -341,40 +335,25 @@ function dropHandler(event) {
        return;
       }
   });
-
-
-
   // validateAnswer(concatChoices);
   validateAnswer();
 }
+
 
 // Validate the answer choices and set show the corresponding stamp, allow the user to move to the next page.
 // function validateAnswer(concatChoices) {
 function validateAnswer() {
   let correctAnswer = availableQuizzes[randNumber].name;
-  
   let concatChoices = "";
   const dropElements = dropEle.querySelectorAll(".dropEle");
-  //debugstart
-  // console.log("innerText: dropElement.firstChild.innerText",dropElements.firstChild.innerText)
-  // console.log("Number of dropElements:", dropElements.length);
-// dropElements.forEach(dropElement => {
-//   console.log("dropElement classList:", dropElement.classList);
-//   console.log("dropElement children:", dropElement.firstElementChild);
-//   console.log("dropElement children text:", dropElement.firstElementChild.innerText);
-//   // console.log("dropElement firstchild:", dropElement.firstChild.innerText);
-// });
-//debugend
+
   dropElements.forEach(dropElement => {
     const hasDroppedClass = dropElement.classList.contains("dropped");
     const hasChildren = dropElement.children.length === 1;
-      if (hasDroppedClass && hasChildren) {
+    if (hasDroppedClass && hasChildren) {
       concatChoices += dropElement.firstElementChild.innerText;      
-  }
+    }
   })
-  //debugstart
-console.log("concatChoices: "+ concatChoices)
-//debugend
 
   if(!concatChoices) {
         return;
@@ -465,12 +444,8 @@ function resetDragDrop() {
   // Loop through dropped element's parent (dropTargets) and move all dropped hrgn back to the pool of hrgn where it was origially
   const dropTargets = dropEle.querySelectorAll('.dropEle');
   dropTargets.forEach(drop => {
-    if (drop.firstElementChild) {
-
-      console.log(drop.firstElementChild)
-      // drop.firstElementChild.removeAttribute("pointer-events");
+    if (drop.firstElementChild) {      
       drop.firstElementChild.style.pointerEvents = '';
-      console.log(drop.firstElementChild)    
       hintEle.appendChild(drop.firstElementChild); 
     }
     // Reset the border for the drop target
@@ -482,7 +457,7 @@ function resetDragDrop() {
   draggedText = "";
   welldoneStemps.style.display = 'none';
   notcorrectStemps.style.display = 'none';
-  // drop.firstElementChild.removeAttribute("pointer-events");
+  
 
 }
 
