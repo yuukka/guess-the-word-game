@@ -58,7 +58,10 @@ let concatChoices = "";
 let defaultLanguage = "";
 let draggedElement = "";
 let draggedText = "";
-
+let touchDragEl = null;
+let offsetX = 0;
+let offsetY = 0;
+let isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
 // Class
 // To store the quiz after generating new quiz instance, 
@@ -186,7 +189,7 @@ function createDropDiv(answer) {
     dropDiv.style.width = '2.3rem';
     dropDiv.style.textAlign = 'center';
     dropDiv.style.boxSizing = 'border-box';
-    dropDiv.addEventListener("drop", dropHandler);           
+    dropDiv.addEventListener("drop", dropHandler);                   
     dropDiv.addEventListener("dragover", dragoverHandler);   
 
     dropEle.appendChild(dropDiv); 
@@ -201,8 +204,11 @@ function createElements(randomizedhrgns, charType) {
     div = document.createElement('div');
     div.randomizedhrgn = randomizedhrgn;
     div.textContent = `${randomizedhrgn}`;
-    div.setAttribute("draggable", "true");
     div.addEventListener("dragstart", dragstartHandler);
+    div.addEventListener("touchstart", handleTouchStart, { passive: false });
+    div.addEventListener("touchmove", handleTouchMove, { passive: false });
+    div.addEventListener("touchend", handleTouchEnd, { passive: false });
+    div.setAttribute("draggable", "true");
     div.setAttribute("id", `${randomizedhrgn} + ${[i]}`);
     div.style.border = '3px solid var(--white)';
     div.style.borderRadius = "8px";
@@ -211,11 +217,76 @@ function createElements(randomizedhrgns, charType) {
     div.style.textAlign = 'center';
     div.style.boxSizing = 'border-box';
     hintEle.appendChild(div);
+    if (isTouchDevice) {
+      div.addEventListener("touchstart", handleTouchStart, { passive: false });
+      div.addEventListener("touchmove", handleTouchMove, { passive: false });
+      div.addEventListener("touchend", handleTouchEnd, { passive: false });
+    } else {
+      div.addEventListener("dragstart", dragstartHandler);
+    }
     // assign class of correctChoice to later use to highlight the hrgn when the user clikc on 'hint' button
     if (charType === "Answer") {
       div.setAttribute("class", "correctChoice");
     }
   }
+}
+
+function handleTouchStart(event) {
+  if (event.target.classList.contains("correctChoice") || event.target.parentElement === hintEle) {
+    touchDragEl = event.target;
+    const touch = event.touches[0];
+    const rect = touchDragEl.getBoundingClientRect();
+    offsetX = touch.clientX - rect.left;
+    offsetY = touch.clientY - rect.top;
+    touchDragEl.style.position = 'absolute';
+    touchDragEl.style.zIndex = '1000';
+    touchDragEl.style.pointerEvents = 'none'; // avoid blocking events
+    document.body.appendChild(touchDragEl);
+    moveAt(touch.pageX, touch.pageY);
+  }
+}
+
+function handleTouchMove(event) {
+  if (!touchDragEl) return;
+  event.preventDefault(); // prevent scrolling
+  const touch = event.touches[0];
+  moveAt(touch.pageX, touch.pageY);
+}
+
+function moveAt(pageX, pageY) {
+  if (touchDragEl) {
+    touchDragEl.style.left = (pageX - offsetX) + 'px';
+    touchDragEl.style.top = (pageY - offsetY) + 'px';
+  }
+}
+
+function handleTouchEnd(event) {
+  if (!touchDragEl) return;
+  const touch = event.changedTouches[0];
+  const dropTarget = document.elementFromPoint(touch.clientX, touch.clientY);
+  const validDrop = dropTarget && dropTarget.classList.contains('dropEle') && dropTarget.children.length === 0;
+
+  if (validDrop) {
+    dropTarget.appendChild(touchDragEl);
+    dropTarget.style.border = "none";
+    draggedText = touchDragEl.innerText;
+    concatChoices += draggedText;
+    dropTarget.classList.add("dropped");
+    validateAnswer(concatChoices);
+    touchDragEl.style.position = '';
+  } else {
+    // Revert back to pool
+    hintEle.appendChild(touchDragEl);
+    touchDragEl.style.position = '';
+    touchDragEl.style.left = '';
+    touchDragEl.style.top = '';
+    touchDragEl.style.zIndex = '';
+    touchDragEl.style.pointerEvents = '';
+  }
+
+  touchDragEl = null;
+  
+  validateAnswer();
 }
 
 // When an element/hrgn starts being dragged, store the ID of that element in the dataTransfer object
@@ -238,7 +309,6 @@ function dropHandler(event) {
   if (!dropTarget) return; 
   // Prevent dropping if already occupied
   if (dropTarget.children.length > 0) return;
-
 
 
   //Get the hrgn text from dataTransfer object, as in the dragged element and validate the Answer
@@ -265,26 +335,23 @@ function dropHandler(event) {
        return;
       }
   });
-
-
-
   // validateAnswer(concatChoices);
   validateAnswer();
 }
+
 
 // Validate the answer choices and set show the corresponding stamp, allow the user to move to the next page.
 // function validateAnswer(concatChoices) {
 function validateAnswer() {
   let correctAnswer = availableQuizzes[randNumber].name;
-  
   let concatChoices = "";
   const dropElements = dropEle.querySelectorAll(".dropEle");
-  
+
   dropElements.forEach(dropElement => {
     const hasDroppedClass = dropElement.classList.contains("dropped");
     const hasChildren = dropElement.children.length === 1;
     if (hasDroppedClass && hasChildren) {
-      concatChoices += dropElement.firstChild.innerText;
+      concatChoices += dropElement.firstElementChild.innerText;      
     }
   })
 
@@ -377,8 +444,9 @@ function resetDragDrop() {
   // Loop through dropped element's parent (dropTargets) and move all dropped hrgn back to the pool of hrgn where it was origially
   const dropTargets = dropEle.querySelectorAll('.dropEle');
   dropTargets.forEach(drop => {
-    if (drop.firstChild) {
-      hintEle.appendChild(drop.firstChild); 
+    if (drop.firstElementChild) {      
+      drop.firstElementChild.style.pointerEvents = '';
+      hintEle.appendChild(drop.firstElementChild); 
     }
     // Reset the border for the drop target
     drop.style.border = '3px solid var(--white)';
@@ -389,6 +457,8 @@ function resetDragDrop() {
   draggedText = "";
   welldoneStemps.style.display = 'none';
   notcorrectStemps.style.display = 'none';
+  
+
 }
 
 // Show hint. 'correctChoice' class was assigned to the correct hrgn in createElements function

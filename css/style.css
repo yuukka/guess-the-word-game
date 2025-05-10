@@ -441,6 +441,11 @@ input{
   }
   .flex-buttons {
     top: -10px;
+    flex-direction: column;
+    align-items: center;
+  }
+  #win-button {
+    height: 80px;
   }
   #game-state {
     position: relative;
