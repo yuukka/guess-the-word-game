@@ -284,6 +284,8 @@ function handleTouchEnd(event) {
   }
 
   touchDragEl = null;
+  console.log("Hello");
+  validateAnswer();
 }
 
 // When an element/hrgn starts being dragged, store the ID of that element in the dataTransfer object
@@ -347,14 +349,25 @@ function validateAnswer() {
   
   let concatChoices = "";
   const dropElements = dropEle.querySelectorAll(".dropEle");
-  
+  //debugstart
+  // console.log("innerText: dropElement.firstChild.innerText",dropElements.firstChild.innerText)
+  console.log("Number of dropElements:", dropElements.length);
+dropElements.forEach(dropElement => {
+  console.log("dropElement classList:", dropElement.classList);
+  console.log("dropElement children:", dropElement.children.length);
+  // console.log("dropElement firstchild:", dropElement.firstChild.innerText);
+});
+//debugend
   dropElements.forEach(dropElement => {
     const hasDroppedClass = dropElement.classList.contains("dropped");
     const hasChildren = dropElement.children.length === 1;
     if (hasDroppedClass && hasChildren) {
-      concatChoices += dropElement.firstChild.innerText;
+      concatChoices += dropElement.firstElementChild.innerText;
     }
   })
+  //debugstart
+console.log("concatChoices: "+ concatChoices)
+//debugend
 
   if(!concatChoices) {
         return;
