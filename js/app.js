@@ -62,6 +62,10 @@ let touchDragEl = null;
 let offsetX = 0;
 let offsetY = 0;
 let isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+let touchDragEl = null;
+let offsetX = 0;
+let offsetY = 0;
+let isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
 // Class
 // To store the quiz after generating new quiz instance, 
@@ -190,6 +194,7 @@ function createDropDiv(answer) {
     dropDiv.style.textAlign = 'center';
     dropDiv.style.boxSizing = 'border-box';
     dropDiv.addEventListener("drop", dropHandler);          
+    dropDiv.addEventListener("drop", dropHandler);          
     dropDiv.addEventListener("dragover", dragoverHandler);   
 
     dropEle.appendChild(dropDiv); 
@@ -209,6 +214,10 @@ function createElements(randomizedhrgns, charType) {
     div.addEventListener("touchmove", handleTouchMove, { passive: false });
     div.addEventListener("touchend", handleTouchEnd, { passive: false });
     div.setAttribute("draggable", "true");
+    div.addEventListener("touchstart", handleTouchStart, { passive: false });
+    div.addEventListener("touchmove", handleTouchMove, { passive: false });
+    div.addEventListener("touchend", handleTouchEnd, { passive: false });
+    div.setAttribute("draggable", "true");
     div.setAttribute("id", `${randomizedhrgn} + ${[i]}`);
     div.style.border = '3px solid var(--white)';
     div.style.borderRadius = "8px";
@@ -217,6 +226,13 @@ function createElements(randomizedhrgns, charType) {
     div.style.textAlign = 'center';
     div.style.boxSizing = 'border-box';
     hintEle.appendChild(div);
+    if (isTouchDevice) {
+      div.addEventListener("touchstart", handleTouchStart, { passive: false });
+      div.addEventListener("touchmove", handleTouchMove, { passive: false });
+      div.addEventListener("touchend", handleTouchEnd, { passive: false });
+    } else {
+      div.addEventListener("dragstart", dragstartHandler);
+    }
     if (isTouchDevice) {
       div.addEventListener("touchstart", handleTouchStart, { passive: false });
       div.addEventListener("touchmove", handleTouchMove, { passive: false });
