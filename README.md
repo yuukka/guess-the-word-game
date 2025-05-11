@@ -38,6 +38,7 @@ The inspiration behind creating this game came from my desire to help my son —
 * **[Kaggle]**
 * **[Adobe Stock]**
 * **[Figma]**
+* **[Google Font]**
 
 
 
@@ -53,7 +54,7 @@ The inspiration behind creating this game came from my desire to help my son —
 
 [Figma]: https://www.figma.com/community/file/937774188065101204
 
-
+[Google Font]: https://fonts.google.com
 
 ## Future Enhancements
 * Expend the question library to add more vocablary
